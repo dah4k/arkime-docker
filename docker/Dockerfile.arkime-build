@@ -1,0 +1,29 @@
+ARG FROM_IMAGE_BASE
+FROM ${FROM_IMAGE_BASE}
+
+ARG ARKIME_REPO=https://github.com/arkime/arkime
+ARG ARKIME_VERSION=4.0.3
+LABEL arkime_repo=${ARKIME_REPO}
+LABEL arkime_version=${ARKIME_VERSION_TAG}
+
+WORKDIR /scratch
+RUN git clone ${ARKIME_REPO}
+
+##  Arkime capture
+WORKDIR /scratch/arkime
+RUN git checkout v${ARKIME_VERSION} \
+    && ./bootstrap.sh \
+    && ./configure \
+        --prefix=/opt/arkime \
+        --with-lua \
+        --without-libnl \
+        --with-maxminddb=/opt/maxminddb \
+        --with-yara=/opt/yara \
+    && make
+
+##  Arkime WebUI Viewer
+WORKDIR /scratch/arkime
+RUN npm install \
+    && npm install-test \
+    && npm test \
+    && make install

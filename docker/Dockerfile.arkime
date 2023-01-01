@@ -1,0 +1,24 @@
+ARG FROM_IMAGE_ARTIFACT
+ARG FROM_IMAGE_BASE
+FROM ${FROM_IMAGE_ARTIFACT} as TmpForCopy
+
+ARG FROM_IMAGE_BASE
+FROM ${FROM_IMAGE_BASE}
+
+ARG NODE_PREFIX=/opt/nodejs
+COPY --from=TmpForCopy ${NODE_PREFIX} ${NODE_PREFIX}
+ENV PATH="${NODE_PREFIX}/bin:$PATH"
+
+ARG ARKIME_PREFIX=/opt/arkime
+COPY --from=TmpForCopy ${ARKIME_PREFIX} ${ARKIME_PREFIX}
+ENV PATH="${ARKIME_PREFIX}/bin:$PATH"
+
+WORKDIR /opt/arkime/etc
+RUN curl -O https://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.csv \
+    && curl -o oui.txt https://raw.githubusercontent.com/wireshark/wireshark/master/manuf \
+    && sed -e "s,ARKIME_INSTALL_DIR,/opt/arkime,g" config.ini.sample > config.ini
+
+HEALTHCHECK CMD curl --fail http://localhost:8005 || exit 1
+
+WORKDIR /opt/arkime/viewer
+ENTRYPOINT ["/opt/nodejs/bin/node", "viewer.js", "-c", "/opt/arkime/etc/config.ini"]

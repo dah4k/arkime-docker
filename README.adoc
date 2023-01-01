@@ -1,0 +1,58 @@
+= https://github.com/arkime/arkime/[Arkime] Docker image/container
+
+This repository builds Arkime container on PhotonOS for CI/CD.
+
+
+== Getting Started
+
+=== Prerequisites
+
+The build host (or cloud instance) requires:
+
+- `docker`
+- `make`
+
+
+=== Build the container
+
+----
+% make all
+----
+
+=== Run the container
+
+FIXME: Cannot run Arkime Viewer
+
+----
+% docker run local/arkime
+node:internal/modules/cjs/loader:988
+  throw err;
+  ^
+
+Error: Cannot find module '../common/version'
+Require stack:
+- /opt/arkime/viewer/config.js
+- /opt/arkime/viewer/viewer.js
+    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:985:15)
+    at Function.Module._load (node:internal/modules/cjs/loader:833:27)
+    at Module.require (node:internal/modules/cjs/loader:1057:19)
+    at require (node:internal/modules/cjs/helpers:103:18)
+    at Object.<anonymous> (/opt/arkime/viewer/config.js:28:17)
+    at Module._compile (node:internal/modules/cjs/loader:1155:14)
+    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1209:10)
+    at Module.load (node:internal/modules/cjs/loader:1033:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:868:12)
+    at Module.require (node:internal/modules/cjs/loader:1057:19) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [ '/opt/arkime/viewer/config.js', '/opt/arkime/viewer/viewer.js' ]
+}
+----
+
+
+== Resources
+
+- https://github.com/mammo0/docker-arkime/
+- https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md
+- https://github.com/docker/setup-qemu-action/blob/master/dev.Dockerfile
+- https://github.com/vmware/photon/blob/master/docs/photon_installation/build-package-kernel-using-script.md
+
