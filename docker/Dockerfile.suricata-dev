@@ -1,0 +1,14 @@
+ARG PHOTON_VERSION=4.0
+FROM photon:${PHOTON_VERSION}
+
+WORKDIR /scratch
+ARG REQUIREMENTS
+COPY ${REQUIREMENTS} Requirements.txt
+
+RUN tdnf --assumeyes update \
+    && tdnf --assumeyes install `cat Requirements.txt` \
+    && tdnf clean all
+
+# `cbindgen` is not available in Photon repo.
+# `cargo install` to system prefix and avoid PATH command-not-found.
+RUN cargo install --root /usr cbindgen

@@ -1,0 +1,32 @@
+ARG FROM_IMAGE_ARTIFACT
+ARG FROM_IMAGE_BASE
+FROM ${FROM_IMAGE_ARTIFACT} as TmpForCopy
+
+ARG FROM_IMAGE_BASE
+FROM ${FROM_IMAGE_BASE}
+
+ARG LUAJIT_PREFIX=/opt/luajit
+COPY --from=TmpForCopy ${LUAJIT_PREFIX} ${LUAJIT_PREFIX}
+ENV PATH="${LUAJIT_PREFIX}/bin:$PATH"
+ENV LD_LIBRARY_PATH="${LUAJIT_PREFIX}/lib:$LD_LIBRARY_PATH"
+
+ARG SURICATA_PREFIX=/opt/suricata
+COPY --from=TmpForCopy ${SURICATA_PREFIX} ${SURICATA_PREFIX}
+ENV PATH="${SURICATA_PREFIX}/bin:$PATH"
+
+RUN mkdir -p \
+    /var/lib/suricata \
+    /var/log/suricata \
+    /var/run/suricata
+
+# `useradd` with long options is more available on different Linux families.
+# Only fallback to `addgroup && adduser` (short options) for Alpine/BusyBox.
+RUN (useradd --system --user-group --no-create-home suricata \
+        || (addgroup suricata && adduser -S -G suricata -H suricata)) \
+    && chown -R suricata:suricata ${SURICATA_PREFIX} \
+    && chown -R suricata:suricata /var/lib/suricata \
+    && chown -R suricata:suricata /var/log/suricata \
+    && chown -R suricata:suricata /var/run/suricata
+
+# Check to make sure we got all libraries needed in `suricata` image
+RUN ldd ${SURICATA_PREFIX}/bin/suricata

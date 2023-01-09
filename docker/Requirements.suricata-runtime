@@ -1,0 +1,9 @@
+file-libs
+jansson
+libcap-ng
+libnetfilter_queue
+libnfnetlink
+libpcap
+libyaml
+lz4
+shadow

@@ -1,0 +1,38 @@
+ARG FROM_IMAGE_ARTIFACT
+ARG FROM_IMAGE_BASE
+FROM ${FROM_IMAGE_ARTIFACT} as TmpForCopy
+
+ARG FROM_IMAGE_BASE
+FROM ${FROM_IMAGE_BASE}
+
+ARG LUAJIT_PREFIX=/opt/luajit
+COPY --from=TmpForCopy ${LUAJIT_PREFIX} ${LUAJIT_PREFIX}
+ENV PATH="${LUAJIT_PREFIX}/bin:$PATH"
+ENV LD_LIBRARY_PATH="${LUAJIT_PREFIX}/lib:$LD_LIBRARY_PATH"
+
+ARG SURICATA_PREFIX=/opt/suricata
+COPY --from=TmpForCopy ${SURICATA_PREFIX} ${SURICATA_PREFIX}
+ENV PATH="${SURICATA_PREFIX}/bin:$PATH"
+
+## copy Suricata code and compiled binaries from `suricata-build`
+COPY --from=TmpForCopy /scratch/suricata /scratch/suricata
+
+##------------------------------------------------------------------------------
+##  Checkout Suricata Verify
+##------------------------------------------------------------------------------
+ARG SURICATA_VERIFY_REPO=https://github.com/OISF/suricata-verify.git
+ARG SURICATA_VERIFY_VERSION=suricata-6.0.9
+LABEL x_suricata_verify_repo="${SURICATA_VERIFY_REPO}"
+LABEL x_suricata_verify_version="${SURICATA_VERIFY_VERSION}"
+
+WORKDIR /scratch
+RUN git clone ${SURICATA_VERIFY_REPO}
+
+WORKDIR /scratch/suricata-verify
+RUN git checkout ${SURICATA_VERIFY_VERSION}
+
+##------------------------------------------------------------------------------
+##  Run Suricata Verify (must be run from Suricata source directory)
+##------------------------------------------------------------------------------
+WORKDIR /scratch/suricata
+ENTRYPOINT [ "python3", "../suricata-verify/run.py" ]

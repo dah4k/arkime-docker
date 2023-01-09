@@ -1,5 +1,5 @@
 DOCKER      ?= docker
-PRODUCTS    ?= arkime
+PRODUCTS    ?= arkime suricata
 TAG_PREFIX  ?= local
 
 DOCKERFILE  := docker/Dockerfile

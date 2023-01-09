@@ -1,0 +1,72 @@
+ARG FROM_IMAGE_BASE
+FROM ${FROM_IMAGE_BASE}
+
+##------------------------------------------------------------------------------
+##  Checkout Suricata code
+##------------------------------------------------------------------------------
+ARG SURICATA_REPO=https://github.com/OISF/suricata.git
+ARG SURICATA_VERSION=suricata-6.0.9
+LABEL x_suricata_repo="${SURICATA_REPO}"
+LABEL x_suricata_version="${SURICATA_VERSION}"
+
+WORKDIR /scratch
+RUN git clone ${SURICATA_REPO}
+
+WORKDIR /scratch/suricata
+RUN git checkout ${SURICATA_VERSION}
+
+##------------------------------------------------------------------------------
+##  Checkout Libhtp dependency
+##------------------------------------------------------------------------------
+ARG LIBHTP_REPO=https://github.com/OISF/libhtp.git
+ARG LIBHTP_VERSION=0.5.42
+LABEL x_libhtp_repo="${LIBHTP_REPO}"
+LABEL x_libhtp_version="${LIBHTP_VERSION}"
+
+WORKDIR /scratch/suricata
+RUN git clone ${LIBHTP_REPO}
+
+WORKDIR /scratch/suricata/libhtp
+RUN git checkout ${LIBHTP_VERSION}
+
+##------------------------------------------------------------------------------
+##  Checkout and build LuaJIT dependency
+##------------------------------------------------------------------------------
+ARG LUAJIT_PREFIX=/opt/luajit
+ARG LUAJIT_REPO=https://github.com/LuaJIT/LuaJIT.git
+ARG LUAJIT_VERSION=HEAD
+LABEL x_luajit_repo="${LUAJIT_REPO}"
+LABEL x_luajit_version="${LUAJIT_VERSION}"
+
+WORKDIR /scratch
+RUN git clone ${LUAJIT_REPO}
+
+WORKDIR /scratch/LuaJIT
+RUN git checkout ${LUAJIT_VERSION}
+
+RUN make PREFIX=${LUAJIT_PREFIX} amalg
+RUN make PREFIX=${LUAJIT_PREFIX} install
+ENV PATH="${LUAJIT_PREFIX}/bin:$PATH"
+ENV LD_LIBRARY_PATH="${LUAJIT_PREFIX}/lib:$LD_LIBRARY_PATH"
+
+##------------------------------------------------------------------------------
+##  Build Suricata software
+##------------------------------------------------------------------------------
+ARG SURICATA_PREFIX=/opt/suricata
+
+WORKDIR /scratch/suricata
+RUN ./autogen.sh
+RUN CPPFLAGS="-I/usr/include/libnetfilter_queue/ -I/usr/include/libnfnetlink/" \
+    ./configure \
+        --prefix=${SURICATA_PREFIX} \
+        --sysconfdir=${SURICATA_PREFIX}/etc \
+        --localstatedir=/var \
+        --disable-geoip \
+        --enable-nfqueue \
+        --enable-luajit \
+        --with-libluajit-includes=${LUAJIT_PREFIX}/include/luajit-2.1 \
+        --with-libluajit-libraries=${LUAJIT_PREFIX}/lib
+
+RUN make -j
+RUN make install install-conf
+ENV PATH="${SURICATA_PREFIX}/bin:$PATH"
