@@ -27,3 +27,6 @@ RUN npm install \
     && npm install-test \
     && npm test \
     && make install
+
+##  Fix(?) Error: Cannot find module '../common/version'
+RUN cp -rp /scratch/arkime/common /opt/arkime
