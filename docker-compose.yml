@@ -4,7 +4,7 @@ services:
   es01:
     image: elasticsearch:8.6.0
     container_name: es01
-    user: $UID:$GID
+    user: ${UID}:${GID}
     ulimits:
       nofile:
         soft: 65535
@@ -20,10 +20,8 @@ services:
       - ingest.geoip.downloader.enabled=false
       - xpack.ml.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      #- "ELASTIC_PASSWORD=1234"
     ports:
-      - 9200:9200
-      - 9300:9300
+      - ${ES_PORT}:9200
     volumes:
       - elastic-data:/var/share/elasticsearch/data
       - elastic-logs:/usr/share/elasticsearch/logs
@@ -33,14 +31,11 @@ services:
   kibana:
     image: kibana:8.6.0
     container_name: kibana
-    user: $UID:$GID
+    user: ${UID}:${GID}
     depends_on:
       - es01
-    #environment:
-    #  - "ELASTICSEARCH_USERNAME=elastic"
-    #  - "ELASTICSEARCH_PASSWORD=1234"
     ports:
-      - 5601:5601
+      - ${KIBANA_PORT}:5601
     networks:
       - elastic-net
 
