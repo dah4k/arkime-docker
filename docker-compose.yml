@@ -19,12 +19,23 @@ services:
       - bootstrap.memory_lock=true
       - ingest.geoip.downloader.enabled=false
       - xpack.ml.enabled=false
+      # - xpack.security.enabled=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl --silent --cacert /usr/share/elasticsearch/config/certs/http_ca.crt https://localhost:9200 | grep --quiet 'missing authentication credentials'"
+        ]
+      interval: 60s
+      timeout: 10s
+      retries: 3
     ports:
       - "${ES_PORT}:9200"
     volumes:
-      - elastic-data:/var/share/elasticsearch/data
-      - elastic-logs:/usr/share/elasticsearch/logs
+      - es01-data:/usr/share/elasticsearch/data
+      - es01-logs:/usr/share/elasticsearch/logs
     networks:
       - elastic-net
 
@@ -40,8 +51,8 @@ services:
       - elastic-net
 
 volumes:
-  elastic-data:
-  elastic-logs:
+  es01-data:
+  es01-logs:
 
 networks:
   elastic-net:
