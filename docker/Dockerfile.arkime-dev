@@ -1,4 +1,4 @@
-ARG PHOTON_VERSION=4.0
+ARG PHOTON_VERSION=5.0
 FROM photon:${PHOTON_VERSION}
 
 WORKDIR /scratch
@@ -15,8 +15,8 @@ RUN tdnf --assumeyes update \
 ##  We must rebuild it from source code.
 ##
 ARG YARA_PREFIX=/opt/yara
-ARG YARA_VERSION=4.2.3
-ARG YARA_SHA256=1cd84fc2db606e83084a648152eb35103c3e30350825cb7553448d5ccde02a0d
+ARG YARA_VERSION=4.5.0
+ARG YARA_SHA256=f6db34bd102703bf56cc2878ddfb249c3fb2e09c9194d3adb78c3ab79282c827
 ARG YARA_TARBALL=v${YARA_VERSION}.tar.gz
 ARG YARA_URL=https://github.com/VirusTotal/yara/archive/refs/tags/${YARA_TARBALL}
 LABEL yara_url=${YARA_URL}
@@ -44,11 +44,12 @@ ENV LD_LIBRARY_PATH="${YARA_PREFIX}/lib:$LD_LIBRARY_PATH"
 ##  PhotoOS does not have pre-compiled libmaxminddb package.
 ##  We must rebuild it from source code.
 ##
-##  WONTFIX: Tarball from https://github.com/maxmind/libmaxminddb/archive/refs/tags/1.7.1.tar.gz is missing `libtap/tap.h` and other Git submodules.
-##  Recursive Git clone the repo instead.
+##  WONTFIX: Tarball from https://github.com/maxmind/libmaxminddb/archive/refs/tags/1.9.1.tar.gz is still missing `libtap/tap.h` and other Git submodules.
+##  Must recursively Git clone the repo instead.
+##  See Also https://github.com/maxmind/libmaxminddb/issues/161
 ##
 ARG MAXMINDDB_PREFIX=/opt/maxminddb
-ARG MAXMINDDB_VERSION=1.7.1
+ARG MAXMINDDB_VERSION=1.9.1
 ARG MAXMINDDB_REPO=https://github.com/maxmind/libmaxminddb
 LABEL maxminddb_repo=${MAXMINDDB_REPO}
 LABEL maxminddb_version=${MAXMINDDB_VERSION}
@@ -71,11 +72,11 @@ ENV LD_LIBRARY_PATH="${MAXMINDDB_PREFIX}/lib:$LD_LIBRARY_PATH"
 
 
 ##
-##  KISS: Use pre-compiled NodeJS, version must be 16
+##  KISS: Use pre-compiled NodeJS, version must be higher than 16
 ##
 ARG NODE_PREFIX=/opt/nodejs
-ARG NODE_VERSION=16.18.1
-ARG NODE_SHA256=de2c694e7081c37022817d27a65b02f69ecf4c49699d65585e8e24431b7bc920
+ARG NODE_VERSION=20.13.0
+ARG NODE_SHA256=a58d5d99b4ccf95d966dd1e3d3a560f4686e3e1e4f7331258860d429f13fc7eb
 ARG NODE_TARBALL=node-v${NODE_VERSION}-linux-x64.tar.xz
 ARG NODE_URL=https://nodejs.org/download/release/v${NODE_VERSION}/${NODE_TARBALL}
 LABEL node_url=${NODE_URL}
