@@ -16,36 +16,26 @@ The build host (or cloud instance) requires:
 === Build the container
 
 ----
-% make all
+% make arkime
 ----
 
 === Run the container
 
-FIXME: Cannot run Arkime Viewer
+FIXME: OpenSeach/ElasticSearch is not configured
 
 ----
 % docker run local/arkime
-node:internal/modules/cjs/loader:988
-  throw err;
-  ^
-
-Error: Cannot find module '../common/version'
-Require stack:
-- /opt/arkime/viewer/config.js
-- /opt/arkime/viewer/viewer.js
-    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:985:15)
-    at Function.Module._load (node:internal/modules/cjs/loader:833:27)
-    at Module.require (node:internal/modules/cjs/loader:1057:19)
-    at require (node:internal/modules/cjs/helpers:103:18)
-    at Object.<anonymous> (/opt/arkime/viewer/config.js:28:17)
-    at Module._compile (node:internal/modules/cjs/loader:1155:14)
-    at Object.Module._extensions..js (node:internal/modules/cjs/loader:1209:10)
-    at Module.load (node:internal/modules/cjs/loader:1033:32)
-    at Function.Module._load (node:internal/modules/cjs/loader:868:12)
-    at Module.require (node:internal/modules/cjs/loader:1057:19) {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [ '/opt/arkime/viewer/config.js', '/opt/arkime/viewer/viewer.js' ]
-}
+...
+WARNING - Using authMode=digest since not set, add to config file to silence this warning.
+ERROR - fetching aliases ConnectionError: getaddrinfo ENOTFOUND arkime_elasticsearch
+ERROR - OpenSearch/Elasticsearch ConnectionError: getaddrinfo ENOTFOUND arkime_elasticsearch
+...
+Getting OpenSearch/Elasticsearch info failed - the above error message might explain why
+Common issues:
+  * Is OpenSearch/Elasticsearch running and NOT RED?
+  * Have you run 'db/db.pl <host:port> init'?
+  * Is the 'elasticsearch' setting (http://ARKIME_ELASTICSEARCH) correct in config file (/opt/arkime/etc/config.ini) with a username and password if needed? (https://arkime.com/settings#elasticsearch)
+  * Do you need the --insecure option? (See https://arkime.com/faq#insecure)
 ----
 
 
