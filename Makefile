@@ -1,9 +1,10 @@
 DOCKER      ?= docker
-PRODUCTS    ?= arkime suricata dc
+PRODUCTS    ?= arkime suricata
 TAG_PREFIX  ?= local
 
-DOCKERFILE  := docker/Dockerfile
-REQUIREMENTS:= docker/Requirements
+BASEOS      := photon
+DOCKERFILE  := docker/$(BASEOS)/Dockerfile
+REQUIREMENTS:= docker/$(BASEOS)/Requirements
 _ANSI_NORM  := \033[0m
 _ANSI_CYAN  := \033[36m
 
