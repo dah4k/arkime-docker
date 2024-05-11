@@ -21,7 +21,7 @@ COPY --from=TmpForCopy /scratch/suricata /scratch/suricata
 ##  Checkout Suricata Verify
 ##------------------------------------------------------------------------------
 ARG SURICATA_VERIFY_REPO=https://github.com/OISF/suricata-verify.git
-ARG SURICATA_VERIFY_VERSION=suricata-6.0.9
+ARG SURICATA_VERIFY_VERSION=suricata-7.0.5
 LABEL x_suricata_verify_repo="${SURICATA_VERIFY_REPO}"
 LABEL x_suricata_verify_version="${SURICATA_VERIFY_VERSION}"
 

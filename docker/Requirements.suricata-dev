@@ -7,6 +7,7 @@ gawk
 gcc
 git
 glibc-devel
+grep
 jansson-devel
 jq
 libcap-ng-devel
@@ -18,7 +19,7 @@ libyaml-devel
 lz4-devel
 make
 nss-devel
-pcre-devel
+pcre2-devel
 pkg-config
 python3
 python3-pyyaml

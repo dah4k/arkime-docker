@@ -5,7 +5,7 @@ FROM ${FROM_IMAGE_BASE}
 ##  Checkout Suricata code
 ##------------------------------------------------------------------------------
 ARG SURICATA_REPO=https://github.com/OISF/suricata.git
-ARG SURICATA_VERSION=suricata-6.0.9
+ARG SURICATA_VERSION=suricata-7.0.5
 LABEL x_suricata_repo="${SURICATA_REPO}"
 LABEL x_suricata_version="${SURICATA_VERSION}"
 
@@ -19,7 +19,7 @@ RUN git checkout ${SURICATA_VERSION}
 ##  Checkout Libhtp dependency
 ##------------------------------------------------------------------------------
 ARG LIBHTP_REPO=https://github.com/OISF/libhtp.git
-ARG LIBHTP_VERSION=0.5.42
+ARG LIBHTP_VERSION=0.5.48
 LABEL x_libhtp_repo="${LIBHTP_REPO}"
 LABEL x_libhtp_version="${LIBHTP_VERSION}"
 
