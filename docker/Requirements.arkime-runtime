@@ -8,3 +8,4 @@ libyaml
 nghttp2
 pcre-libs
 util-linux-libs
+wget
