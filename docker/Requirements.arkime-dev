@@ -21,7 +21,7 @@ lua-devel
 make
 nghttp2-devel
 openssl-devel
-pcre-devel
+pcre2-devel
 python3-xml
 sudo
 tar
