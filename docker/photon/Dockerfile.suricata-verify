@@ -35,4 +35,5 @@ RUN git checkout ${SURICATA_VERIFY_VERSION}
 ##  Run Suricata Verify (must be run from Suricata source directory)
 ##------------------------------------------------------------------------------
 WORKDIR /scratch/suricata
+RUN python3 ../suricata-verify/run.py
 ENTRYPOINT [ "python3", "../suricata-verify/run.py" ]
