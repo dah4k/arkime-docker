@@ -1,3 +1,8 @@
+<!---
+Copyright 2024 dah4k
+SPDX-License-Identifier: MIT-0
+-->
+
 # [Arkime](https://github.com/arkime/arkime/) Docker image/container
 
 This repository builds Arkime container on PhotonOS for CI/CD.

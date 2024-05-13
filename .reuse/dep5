@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: arkime-docker
+Upstream-Contact: dah4k <84741290+dah4k@users.noreply.github.com>
+Source: https://github.com/dah4k/arkime-docker/
+
+Files: docker/*
+Copyright: 2024 dah4k
+License: MIT-0
