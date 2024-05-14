@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT-0
 flowchart TD
     subgraph ElasticSearch Container
         ES[(Log Events\nNetFlow Indexes)]
-        KIB_UI(fa:fa-firefox Kibana Dashboard)
+        KIB_UI(🌐 Kibana Dashboard)
 
         ES --> KIB_UI
     end
@@ -24,23 +24,23 @@ flowchart TD
         CAP[Arkime Capture]
         ARCHIVE[(Archived\nPCAP Files)]
         SUR[Suricata]
-        ARK(fa:fa-firefox Arkime Viewer)
-        UPL_UI(fa:fa-firefox Web File Upload)
+        ARK(🌐 Arkime Viewer)
+        UPL_UI(🌐 Web File Upload)
 
         ARK_DEV --> CAP
         CAP --> ARCHIVE
         CAP --> ES
         CAP --> ARK
-        CAP -.->|fa:fa-copy PCAP Files| SUR
-        UPL_UI -.-> |fa:fa-file PCAP Files| CAP
+        CAP -.->|Copy PCAP Files| SUR
+        UPL_UI -.-> |PCAP Files| CAP
         SUR --> ES
     end
 
     VLR_AGENT1([VLR Agent 1]) --> VLR
     VLR_AGENT2([VLR Agent 2]) --> VLR
     subgraph Velociraptor Container
-        VLR[fa:fa-home Velociraptor Server]
-        VLR_UI(fa:fa-firefox Velociraptor Viewer)
+        VLR[🏠 Velociraptor Server]
+        VLR_UI(🌐 Velociraptor Viewer)
 
         VLR --> VLR_UI
         VLR -->|Elastic VQL Plugin| ES
