@@ -1,5 +1,5 @@
 # Copyright 2024 dah4k
-# SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: EPL-2.0
 
 arkime-dev:       ## Docker base image for Arkime development
 arkime-runtime:   ## Docker base image for Arkime runtime

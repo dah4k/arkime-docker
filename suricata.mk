@@ -1,5 +1,5 @@
 # Copyright 2024 dah4k
-# SPDX-License-Identifier: MIT-0
+# SPDX-License-Identifier: EPL-2.0
 
 suricata-dev:       ## Docker base image for Suricata development
 suricata-runtime:   ## Docker base image for Suricata runtime

@@ -1,6 +1,6 @@
 <!---
 Copyright 2024 dah4k
-SPDX-License-Identifier: MIT-0
+SPDX-License-Identifier: EPL-2.0
 -->
 
 # [Arkime](https://github.com/arkime/arkime/) Docker image/container
